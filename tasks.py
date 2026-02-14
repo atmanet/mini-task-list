@@ -4,7 +4,9 @@
 import json
 import sys
 
+
 FILE_NAME = "tasks.json"  # the file that will store tasks
+
 
 def load_tasks():
     try:
@@ -13,18 +15,22 @@ def load_tasks():
     except (FileNotFoundError, json.JSONDecodeError):
         return []
 
+
 def save_tasks(tasks):
     with open(FILE_NAME, "w") as f:
         json.dump(tasks, f, indent=2)
+
 
 def list_tasks():
     tasks = load_tasks()
     if not tasks:
         print("No tasks found.")
         return
+
     for t in tasks:
         status = "Done" if t.get("done") else "Not Done"
         print(f'{t.get("id")}. {t.get("title")} - {status}')
+
 
 def add_task(title):
     tasks = load_tasks()
@@ -32,6 +38,7 @@ def add_task(title):
     tasks.append({"id": next_id, "title": title, "done": False})
     save_tasks(tasks)
     print("Task added.")
+
 
 def mark_done(task_id):
     tasks = load_tasks()
@@ -41,12 +48,15 @@ def mark_done(task_id):
             save_tasks(tasks)
             print("Task marked as done.")
             return
+
     print("Invalid task ID.")
+
 
 def main():
     if len(sys.argv) < 2:
         print("Usage: py tasks.py [add/list/done] ...")
         return
+
     cmd = sys.argv[1]
     if cmd == "add" and len(sys.argv) >= 3:
         title = " ".join(sys.argv[2:])
@@ -61,5 +71,7 @@ def main():
     else:
         print("Invalid command or arguments.")
 
+
 if __name__ == "__main__":
     main()
+
